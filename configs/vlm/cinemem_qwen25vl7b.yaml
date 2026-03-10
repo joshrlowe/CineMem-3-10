@@ -1,0 +1,64 @@
+# CardioVLM — CineMem + Qwen2.5-VL-7B default configuration
+
+model:
+  model_name_or_path: "Qwen/Qwen2.5-VL-7B-Instruct"
+  torch_dtype: "bfloat16"
+  device_map: "auto"
+  trust_remote_code: true
+
+cinemem:
+  # special tokens
+  short_invoke_token: "<ms_I>"
+  short_end_token: "<ms_E>"
+  long_invoke_token: "<ml_I>"
+  long_end_token: "<ml_E>"
+
+  # memory dimensions
+  query_len: 8
+  short_mem_len: 8
+  long_mem_len: 16
+  tdm_mem_len: 8
+  psm_mem_len: 16
+  use_dual_memory: true
+
+  # query builder
+  query_builder:
+    num_layers: 2
+    num_heads: 8
+    dropout: 0.0
+    ff_mult: 4
+
+  former_backend: "lora_llm"
+  fix_mrope_temporal: true
+
+  # LoRA adapters
+  lora:
+    r: 16
+    alpha: 32
+    dropout: 0.05
+    target_modules: ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
+
+training:
+  seed: 1234
+  max_new_tokens: 256
+
+  stage1:
+    epochs: 10
+    lr: 1e-4
+    batch_size: 4
+    grad_accum: 4
+    warmup_steps: 100
+
+  stage2:
+    epochs: 5
+    lr: 5e-5
+    group_size: 8
+    r_max: 1.0
+    epsilon_neg: 0.16
+    epsilon_pos: 0.24
+
+rewards:
+  w_cardiac: 0.3
+  w_vprm: 0.3
+  w_memory: 0.2
+  w_dcr: 0.2
