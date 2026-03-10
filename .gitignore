@@ -1,5 +1,5 @@
 _reference/
-data/
+/data/
 __pycache__/
 *.egg-info/
 outputs/

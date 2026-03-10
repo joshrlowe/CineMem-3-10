@@ -1,0 +1,11 @@
+"""Shared cardiac label and imaging constants."""
+
+RV_LABEL = 1
+MYO_LABEL = 2
+LV_LABEL = 3
+LABEL_TO_NAME = {RV_LABEL: "RV", MYO_LABEL: "MYO", LV_LABEL: "LV"}
+
+UKB_SPACING = (1.0, 1.0, 10.0)
+UKB_LAX_SLICE_SIZE = (256, 256)
+UKB_SAX_SLICE_SIZE = (192, 192)
+UKB_N_FRAMES = 50
